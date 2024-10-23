@@ -1,0 +1,131 @@
+<html>
+  <head>
+    <title>Madison Bates</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Delius&family=Emilys+Candy&display=swap" rel="stylesheet">
+    <style>
+      *,
+      *::after,
+      *::before {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-tap-highlight-color: transparent;
+        box-sizing: border-box;
+        margin: 0;
+        border: 0;
+        padding: 0;
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        background: rgb(255,255,255);
+        background: linear-gradient(126deg, rgba(255,255,255,1) 0%, rgba(255,239,205,1) 33%, rgba(255,212,210,1) 63%, rgba(255,255,255,1) 100%);
+        max-width: 100%;
+        height: 100svh;
+        min-height: 100svh;
+        max-height: 100svh;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        align-items: center;
+        justify-content: center;
+
+      }
+
+      .box {
+        display: flex;
+        flex-direction: column;
+        background-color: #f0f0f0;
+        align-items: center;
+        justify-content: center;
+        align-content: center;
+        min-width: 50svw;
+        max-width: 50svw;
+        border-radius: 32px;
+        padding:32px;
+        box-shadow: 0px 0px 32px rgba(39, 153, 115, 0.568);
+      }
+
+      .name {
+        font-family: 'Emilys Candy';
+        font-size: 60px;
+        color: rgb(216, 100, 148);
+        text-align: center;
+      }
+      
+      .time {
+        display:flex;
+        font-family: 'Delius';
+        font-size: 16px;
+        color: rgb(41, 165, 202);
+      }
+
+      .time p:not(:last-child)::after{
+        content: " ";
+        white-space: pre;
+      }
+
+      .time p:is(:empty){
+        display:none;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="name"><p>Madison Bates</p></div>
+      <div class="time">
+        <p id="years">years</p>
+        <p id="months">months</p>
+        <p id="weeks">weeks</p>
+        <p id="days">days</p>
+        <p id="hours">hours</p>
+        <p id="minutes">minutes</p>
+        <p id="seconds">seconds</p>
+      </div>
+    </div>
+  </body>
+  <script>
+    const startTime = 1728014460000
+
+    function pluraliser(number, singular, plural) {
+      return (number >= 2) ? `${number} ${plural}` : `${number} ${singular}`
+    }
+
+    function updateTime() {
+      const currentTime = Date.now()
+      const deltaTime = currentTime - startTime
+
+      //Years
+      const yearsValue = deltaTime / (1000 * 60 * 60 * 24 * 365)
+      document.getElementById("years").innerHTML = (yearsValue < 1) ? '' : pluraliser(Math.floor(yearsValue), 'year', 'years')
+      //Months
+      const monthsValue = (yearsValue % 1) * (1000 * 60 * 60 * 24 * 365) / (1000 * 60 * 60 * 24 * 31)
+      document.getElementById("months").innerHTML = (monthsValue < 1) ? '' : pluraliser(Math.floor(monthsValue), 'month', 'months')
+      //Weeks
+      const weeksValue = (monthsValue % 1) * (1000 * 60 * 60 * 24 * 31) / (1000 * 60 * 60 * 24 * 7)
+      document.getElementById("weeks").innerHTML = (weeksValue < 1) ? '' : pluraliser(Math.floor(weeksValue), 'week', 'weeks')
+      //Days
+      const daysValue = (weeksValue % 1) * (1000 * 60 * 60 * 24 * 7) / (1000 * 60 * 60 * 24)
+      document.getElementById("days").innerHTML = (daysValue <1) ? '' : pluraliser(Math.floor(daysValue), 'day', 'days')
+      //Hours
+      const hoursValue = (daysValue % 1) * (1000 * 60 * 60 * 24) / (1000 * 60 * 60)
+      document.getElementById("hours").innerHTML = (hoursValue < 1) ? '' : pluraliser(Math.floor(hoursValue), 'hour', 'hours')
+      //minutes
+      const minutesValue = (hoursValue % 1) * (1000 * 60 * 60) / (1000 * 60)
+      document.getElementById("minutes").innerHTML = (minutesValue < 1) ? '' : pluraliser(Math.floor(minutesValue), 'minute', 'minutes')
+      //seconds
+      const secondsValue = (minutesValue % 1) * (1000 * 60) / (1000)
+      document.getElementById("seconds").innerHTML = (secondsValue < 1) ? '0 seconds' : pluraliser(Math.floor(secondsValue), 'second', 'seconds')
+    }
+
+    window.onload = () => {
+      updateTime()
+      let updateInterval = setInterval(() => {
+        updateTime();
+      }, 1000);
+    }
+  </script>
+</html>
