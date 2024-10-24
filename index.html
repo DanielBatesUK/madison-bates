@@ -59,7 +59,7 @@
         text-shadow: 0 0 16px rgba(216, 100, 148, 0.75);
         text-align: center;
         scale: 1;
-        animation: anim-scale 1s ease-in-out alternate infinite, anim-rotate 2s ease-in-out alternate infinite;
+        animation: anim-scale 4s ease-in-out alternate infinite, anim-rotate 2s ease-in-out alternate infinite;
       }
         @keyframes anim-scale {
           0% {
@@ -71,10 +71,10 @@
         }
         @keyframes anim-rotate {
           0% {
-            transform: rotate(2deg);
+            transform: rotate(1deg);
           }
           100% {
-            transform: rotate(-2deg);
+            transform: rotate(-1deg);
           }
         }
       
@@ -87,8 +87,6 @@
         color: rgb(41, 165, 202);
         font-weight: normal;
         text-shadow: 0 0 8px rgba(41, 165, 202, 0.75);
-        animation: anim-rotate 4s ease-in-out alternate-reverse infinite;
-
       }
 
       .time p:not(:last-child)::after{
