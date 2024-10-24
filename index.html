@@ -1,9 +1,11 @@
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Madison Bates</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Delius&family=Emilys+Candy&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Delius&family=Emilys+Candy&family=Anonymous+Pro&display=swap" rel="stylesheet">
     <style>
       *,
       *::after,
@@ -37,7 +39,7 @@
       .box {
         display: flex;
         flex-direction: column;
-        background-color: #f0f0f0;
+        background-color: rgba(240, 240, 240, 0.33);
         align-items: center;
         justify-content: center;
         align-content: center;
@@ -45,25 +47,34 @@
         max-width: 50svw;
         border-radius: 32px;
         padding:32px;
-        box-shadow: 0px 0px 32px rgba(39, 153, 115, 0.568);
+        box-shadow: 0px 0px 32px rgba(216, 100, 148, 0.5);
+        border: 1px solid rgba(255,255,255,0.75)
       }
 
       .name {
         font-family: 'Emilys Candy';
-        font-size: 60px;
+        font-size: 4rem;
         color: rgb(216, 100, 148);
         text-align: center;
       }
       
       .time {
         display:flex;
+        flex-wrap: wrap;
         font-family: 'Delius';
-        font-size: 16px;
+        justify-content: center;
+        font-size: 1.2rem;
         color: rgb(41, 165, 202);
+        font-weight: normal;
       }
 
       .time p:not(:last-child)::after{
-        content: " ";
+        content: ", ";
+        white-space: pre;
+      }
+
+      .time p:is(:last-child)::before{
+        content: "and ";
         white-space: pre;
       }
 
