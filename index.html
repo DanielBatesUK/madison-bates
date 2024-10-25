@@ -26,7 +26,7 @@
         flex-direction: column;
         background: rgb(255,255,255);
         background: linear-gradient(126deg, rgba(255,255,255,1) 0%, rgba(255,239,205,1) 33%, rgba(255,212,210,1) 63%, rgba(255,255,255,1) 100%);
-        max-width: 100%;
+        max-width: 100svw;
         height: 100svh;
         min-height: 100svh;
         max-height: 100svh;
@@ -34,7 +34,6 @@
         overflow-y: scroll;
         align-items: center;
         justify-content: center;
-
       }
 
       .box {
@@ -45,10 +44,10 @@
         justify-content: center;
         align-content: center;
         min-width: 50svw;
-        max-width: 50svw;
-        border-radius: 32px;
-        padding:32px;
-        box-shadow: 0px 0px 32px rgba(216, 100, 148, 0.5);
+        max-width: 90svw;
+        border-radius: 2rem;
+        padding: 2rem;
+        box-shadow: 0 0 2rem rgba(216, 100, 148, 0.5);
         border: 1px solid rgba(255,255,255,0.75)
       }
 
@@ -56,9 +55,10 @@
         font-family: 'Emilys Candy';
         font-size: 4rem;
         color: rgb(216, 100, 148);
-        text-shadow: 0 0 16px rgba(216, 100, 148, 0.75);
+        text-shadow: 0 0 1rem rgba(216, 100, 148, 0.75);
         text-align: center;
         scale: 1;
+        transform: rotate(0deg);
         animation: anim-scale 4s ease-in-out alternate infinite, anim-rotate 2s ease-in-out alternate infinite;
       }
         @keyframes anim-scale {
@@ -71,7 +71,7 @@
         }
         @keyframes anim-rotate {
           0% {
-            transform: rotate(1deg);
+            transform: rotate(2deg);
           }
           100% {
             transform: rotate(-1deg);
@@ -86,7 +86,7 @@
         font-size: 1.2rem;
         color: rgb(41, 165, 202);
         font-weight: normal;
-        text-shadow: 0 0 8px rgba(41, 165, 202, 0.75);
+        text-shadow: 0 0 0.5rem rgba(41, 165, 202, 0.75);
       }
 
       .time p:not(:last-child)::after{
@@ -104,10 +104,6 @@
       }
 
       @media screen and (max-width: 608px) {
-        .box {
-          max-width: 90svw;
-        }
-
         .name{
           font-size: 6rem;
         }
@@ -115,6 +111,7 @@
         .time {
           font-size: 2rem;
         }
+
       }
     </style>
   </head>
