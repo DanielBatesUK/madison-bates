@@ -130,44 +130,61 @@
     </div>
   </body>
   <script>
-    const startTime = 1728014460000
+    const startTime = new Date(1728014460000); // Start time as a Date object
 
     function pluraliser(number, singular, plural) {
-      return (number >= 2) ? `${number} ${plural}` : `${number} ${singular}`
+      return (number >= 2) ? `${number} ${plural}` : `${number} ${singular}`;
     }
 
     function updateTime() {
-      const currentTime = Date.now()
-      const deltaTime = currentTime - startTime
+      const currentTime = new Date();
+      
+      // Calculate years and months using calendar dates
+      let years = currentTime.getFullYear() - startTime.getFullYear();
+      let months = currentTime.getMonth() - startTime.getMonth();
+      if (months < 0) {
+        years -= 1;
+        months += 12;
+      }
 
-      //Years
-      const yearsValue = deltaTime / (1000 * 60 * 60 * 24 * 365)
-      document.getElementById("years").innerHTML = (yearsValue < 1) ? '' : pluraliser(Math.floor(yearsValue), 'year', 'years')
-      //Months
-      const monthsValue = (yearsValue % 1) * (1000 * 60 * 60 * 24 * 365) / (1000 * 60 * 60 * 24 * 31)
-      document.getElementById("months").innerHTML = (monthsValue < 1) ? '' : pluraliser(Math.floor(monthsValue), 'month', 'months')
-      //Weeks
-      const weeksValue = (monthsValue % 1) * (1000 * 60 * 60 * 24 * 31) / (1000 * 60 * 60 * 24 * 7)
-      document.getElementById("weeks").innerHTML = (weeksValue < 1) ? '' : pluraliser(Math.floor(weeksValue), 'week', 'weeks')
-      //Days
-      const daysValue = (weeksValue % 1) * (1000 * 60 * 60 * 24 * 7) / (1000 * 60 * 60 * 24)
-      document.getElementById("days").innerHTML = (daysValue <1) ? '' : pluraliser(Math.floor(daysValue), 'day', 'days')
-      //Hours
-      const hoursValue = (daysValue % 1) * (1000 * 60 * 60 * 24) / (1000 * 60 * 60)
-      document.getElementById("hours").innerHTML = (hoursValue < 1) ? '' : pluraliser(Math.floor(hoursValue), 'hour', 'hours')
-      //minutes
-      const minutesValue = (hoursValue % 1) * (1000 * 60 * 60) / (1000 * 60)
-      document.getElementById("minutes").innerHTML = (minutesValue < 1) ? '' : pluraliser(Math.floor(minutesValue), 'minute', 'minutes')
-      //seconds
-      const secondsValue = (minutesValue % 1) * (1000 * 60) / (1000)
-      document.getElementById("seconds").innerHTML = (secondsValue < 1) ? '0 seconds' : pluraliser(Math.floor(secondsValue), 'second', 'seconds')
+      // Calculate days, hours, minutes, and seconds as before
+      const deltaTime = currentTime - new Date(
+        startTime.getFullYear() + years, 
+        startTime.getMonth() + months, 
+        startTime.getDate(),
+        startTime.getHours(),
+        startTime.getMinutes(),
+        startTime.getSeconds()
+      );
+
+      // Display years and months
+      document.getElementById("years").innerHTML = (years < 1) ? '' : pluraliser(years, 'year', 'years');
+      document.getElementById("months").innerHTML = (months < 1) ? '' : pluraliser(months, 'month', 'months');
+
+      // Weeks
+      const weeksValue = deltaTime / (1000 * 60 * 60 * 24 * 7);
+      document.getElementById("weeks").innerHTML = (weeksValue < 1) ? '' : pluraliser(Math.floor(weeksValue), 'week', 'weeks');
+
+      // Days
+      const daysValue = (weeksValue % 1) * 7;
+      document.getElementById("days").innerHTML = (daysValue < 1) ? '' : pluraliser(Math.floor(daysValue), 'day', 'days');
+
+      // Hours
+      const hoursValue = (daysValue % 1) * 24;
+      document.getElementById("hours").innerHTML = (hoursValue < 1) ? '' : pluraliser(Math.floor(hoursValue), 'hour', 'hours');
+
+      // Minutes
+      const minutesValue = (hoursValue % 1) * 60;
+      document.getElementById("minutes").innerHTML = (minutesValue < 1) ? '' : pluraliser(Math.floor(minutesValue), 'minute', 'minutes');
+
+      // Seconds
+      const secondsValue = (minutesValue % 1) * 60;
+      document.getElementById("seconds").innerHTML = (secondsValue < 1) ? '0 seconds' : pluraliser(Math.floor(secondsValue), 'second', 'seconds');
     }
 
     window.onload = () => {
-      updateTime()
-      let updateInterval = setInterval(() => {
-        updateTime();
-      }, 1000);
+      updateTime();
+      setInterval(updateTime, 1000);
     }
   </script>
 </html>
