@@ -103,6 +103,30 @@
         display:none;
       }
 
+      .total {
+        display: flex;
+        height: 0;
+        overflow: hidden;
+        flex-direction: column;
+        font-family: 'Delius';
+        justify-content: center;
+        align-items: center;
+        font-size: 0.8rem;
+        line-height:1rem;
+        color: rgb(26, 101, 124);
+        font-weight: normal;
+        text-shadow: 0 0 0.5rem rgba(26, 101, 124, 0.75);
+        transition: height 100ms;
+      }
+
+      .total.open {
+        height: calc((1rem * 8) + 1rem)
+      }
+
+      .total h3 {
+        padding-top:1rem;
+      }
+
       @media screen and (max-width: 608px) {
         .name{
           font-size: 6rem;
@@ -118,7 +142,7 @@
   <body>
     <div class="box">
       <div class="name"><p>Madison Bates</p></div>
-      <div class="time">
+      <div class="time" onclick="toggleTotals()">
         <p id="years">years</p>
         <p id="months">months</p>
         <p id="weeks">weeks</p>
@@ -127,11 +151,25 @@
         <p id="minutes">minutes</p>
         <p id="seconds">seconds</p>
       </div>
+      <div class="total" id="total">
+        <h3>Totals</h3>
+        <p id="totalYears">years</p>
+        <p id="totalMonths">months</p>
+        <p id="totalWeeks">weeks</p>
+        <p id="totalDays">days</p>
+        <p id="totalHours">hours</p>
+        <p id="totalMinutes">minutes</p>
+        <p id="totalSeconds">seconds</p>
+      </div>
     </div>
   </body>
   <script>
     const startTime = new Date(1728014460000); // Start time as a Date object
 
+    function toggleTotals() {
+      document.getElementById('total').classList.toggle('open')
+    }
+    
     function pluraliser(number, singular, plural) {
       return (number >= 2) ? `${number} ${plural}` : `${number} ${singular}`;
     }
@@ -157,34 +195,49 @@
         startTime.getSeconds()
       );
 
-      // Display years and months
+      // Years
       document.getElementById("years").innerHTML = (years < 1) ? '' : pluraliser(years, 'year', 'years');
+      document.getElementById("totalYears").innerHTML = (years < 1) ? '0 years' : pluraliser(years, 'year', 'years');
+      
+      // Months
       document.getElementById("months").innerHTML = (months < 1) ? '' : pluraliser(months, 'month', 'months');
+      const totalMonthsValue = (years * 12) + months;
+      document.getElementById("totalMonths").innerHTML = (totalMonthsValue < 1) ? '0 months' : pluraliser(totalMonthsValue, 'month', 'months');
 
       // Weeks
       const weeksValue = deltaTime / (1000 * 60 * 60 * 24 * 7);
       document.getElementById("weeks").innerHTML = (weeksValue < 1) ? '' : pluraliser(Math.floor(weeksValue), 'week', 'weeks');
+      const totalWeeksValue = (currentTime - startTime) / (1000 * 60 * 60 * 24 * 7);
+      document.getElementById("totalWeeks").innerHTML = (totalWeeksValue < 1) ? '0 weeks' : pluraliser(Math.floor(totalWeeksValue), 'week', 'weeks');
 
       // Days
       const daysValue = (weeksValue % 1) * 7;
       document.getElementById("days").innerHTML = (daysValue < 1) ? '' : pluraliser(Math.floor(daysValue), 'day', 'days');
+      const totalDaysValue = (currentTime - startTime) / (1000 * 60 * 60 * 24);
+      document.getElementById("totalDays").innerHTML = (totalDaysValue < 1) ? '' : pluraliser(Math.floor(totalDaysValue), 'day', 'days');
 
       // Hours
       const hoursValue = (daysValue % 1) * 24;
       document.getElementById("hours").innerHTML = (hoursValue < 1) ? '' : pluraliser(Math.floor(hoursValue), 'hour', 'hours');
+      const totalHoursValue = (currentTime - startTime) / (1000 * 60 * 60);
+      document.getElementById("totalHours").innerHTML = (totalHoursValue < 1) ? '' : pluraliser(Math.floor(totalHoursValue), 'hour', 'hours');
 
       // Minutes
       const minutesValue = (hoursValue % 1) * 60;
       document.getElementById("minutes").innerHTML = (minutesValue < 1) ? '' : pluraliser(Math.floor(minutesValue), 'minute', 'minutes');
+      const totalMinutesValue = (currentTime - startTime) / (1000 * 60);
+      document.getElementById("totalMinutes").innerHTML = (totalMinutesValue < 1) ? '' : pluraliser(Math.floor(totalMinutesValue), 'minute', 'minutes');
 
       // Seconds
       const secondsValue = (minutesValue % 1) * 60;
       document.getElementById("seconds").innerHTML = (secondsValue < 1) ? '0 seconds' : pluraliser(Math.floor(secondsValue), 'second', 'seconds');
+      const totalSecondsValue = (currentTime - startTime) / (1000);
+      document.getElementById("totalSeconds").innerHTML = (totalSecondsValue < 1) ? '0 seconds' : pluraliser(Math.floor(totalSecondsValue), 'second', 'seconds');
     }
 
     window.onload = () => {
       updateTime();
-      setInterval(updateTime, 1000);
+      setInterval(updateTime, 500);
     }
   </script>
 </html>
