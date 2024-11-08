@@ -171,7 +171,7 @@
     }
     
     function pluraliser(number, singular, plural) {
-      return (number >= 2) ? `${number} ${plural}` : `${number} ${singular}`;
+      return (number >= 2) ? `${number.toLocaleString()} ${plural}` : `${number.toLocaleString()} ${singular}`;
     }
 
     function updateTime() {
