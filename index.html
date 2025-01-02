@@ -176,61 +176,59 @@
 
     function updateTime() {
       const currentTime = new Date();
-      
-      // Calculate years and months using calendar dates
-      let years = currentTime.getFullYear() - startTime.getFullYear();
-      let months = currentTime.getMonth() - startTime.getMonth();
-      if (months < 0) {
-        years -= 1;
-        months += 12;
-      }
 
-      // Calculate days, hours, minutes, and seconds as before
-      const deltaTime = currentTime - new Date(
-        startTime.getFullYear() + years, 
-        startTime.getMonth() + months, 
+      // Adjust for the specific start time
+      let adjustedStartTime = new Date(
+        currentTime.getFullYear(),
+        currentTime.getMonth(),
         startTime.getDate(),
         startTime.getHours(),
         startTime.getMinutes(),
         startTime.getSeconds()
       );
 
-      // Years
-      document.getElementById("years").innerHTML = (years < 1) ? '' : pluraliser(years, 'year', 'years');
+      // If the current time is before the start time of this month, adjust the calculation
+      if (currentTime < adjustedStartTime) {
+        adjustedStartTime.setMonth(adjustedStartTime.getMonth() - 1);
+      }
+
+      // Calculate years and months
+      let years = adjustedStartTime.getFullYear() - startTime.getFullYear();
+      let months = adjustedStartTime.getMonth() - startTime.getMonth();
+      if (months < 0) {
+        years -= 1;
+        months += 12;
+      }
+
+      // Calculate the time difference
+      const deltaTime = currentTime - adjustedStartTime;
+
+      // Update each unit using the deltaTime
+      const daysValue = Math.floor(deltaTime / (1000 * 60 * 60 * 24));
+      const hoursValue = Math.floor((deltaTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutesValue = Math.floor((deltaTime % (1000 * 60 * 60)) / (1000 * 60));
+      const secondsValue = Math.floor((deltaTime % (1000 * 60)) / 1000);
+
+      // Display the results
+      document.getElementById("years").innerHTML = years > 0 ? pluraliser(years, "year", "years") : "";
+      document.getElementById("months").innerHTML = months > 0 ? pluraliser(months, "month", "months") : "";
+      document.getElementById("days").innerHTML = daysValue > 0 ? pluraliser(daysValue, "day", "days") : "";
+      document.getElementById("hours").innerHTML = hoursValue > 0 ? pluraliser(hoursValue, "hour", "hours") : "";
+      document.getElementById("minutes").innerHTML = minutesValue > 0 ? pluraliser(minutesValue, "minute", "minutes") : "";
+      document.getElementById("seconds").innerHTML = pluraliser(secondsValue, "second", "seconds");
+
+      // Total Results
       document.getElementById("totalYears").innerHTML = (years < 1) ? '0 years' : pluraliser(years, 'year', 'years');
-      
-      // Months
-      document.getElementById("months").innerHTML = (months < 1) ? '' : pluraliser(months, 'month', 'months');
       const totalMonthsValue = (years * 12) + months;
       document.getElementById("totalMonths").innerHTML = (totalMonthsValue < 1) ? '0 months' : pluraliser(totalMonthsValue, 'month', 'months');
-
-      // Weeks
-      const weeksValue = deltaTime / (1000 * 60 * 60 * 24 * 7);
-      document.getElementById("weeks").innerHTML = (weeksValue < 1) ? '' : pluraliser(Math.floor(weeksValue), 'week', 'weeks');
       const totalWeeksValue = (currentTime - startTime) / (1000 * 60 * 60 * 24 * 7);
       document.getElementById("totalWeeks").innerHTML = (totalWeeksValue < 1) ? '0 weeks' : pluraliser(Math.floor(totalWeeksValue), 'week', 'weeks');
-
-      // Days
-      const daysValue = (weeksValue % 1) * 7;
-      document.getElementById("days").innerHTML = (daysValue < 1) ? '' : pluraliser(Math.floor(daysValue), 'day', 'days');
       const totalDaysValue = (currentTime - startTime) / (1000 * 60 * 60 * 24);
       document.getElementById("totalDays").innerHTML = (totalDaysValue < 1) ? '' : pluraliser(Math.floor(totalDaysValue), 'day', 'days');
-
-      // Hours
-      const hoursValue = (daysValue % 1) * 24;
-      document.getElementById("hours").innerHTML = (hoursValue < 1) ? '' : pluraliser(Math.floor(hoursValue), 'hour', 'hours');
       const totalHoursValue = (currentTime - startTime) / (1000 * 60 * 60);
       document.getElementById("totalHours").innerHTML = (totalHoursValue < 1) ? '' : pluraliser(Math.floor(totalHoursValue), 'hour', 'hours');
-
-      // Minutes
-      const minutesValue = (hoursValue % 1) * 60;
-      document.getElementById("minutes").innerHTML = (minutesValue < 1) ? '' : pluraliser(Math.floor(minutesValue), 'minute', 'minutes');
       const totalMinutesValue = (currentTime - startTime) / (1000 * 60);
       document.getElementById("totalMinutes").innerHTML = (totalMinutesValue < 1) ? '' : pluraliser(Math.floor(totalMinutesValue), 'minute', 'minutes');
-
-      // Seconds
-      const secondsValue = (minutesValue % 1) * 60;
-      document.getElementById("seconds").innerHTML = (secondsValue < 1) ? '0 seconds' : pluraliser(Math.floor(secondsValue), 'second', 'seconds');
       const totalSecondsValue = (currentTime - startTime) / (1000);
       document.getElementById("totalSeconds").innerHTML = (totalSecondsValue < 1) ? '0 seconds' : pluraliser(Math.floor(totalSecondsValue), 'second', 'seconds');
     }
