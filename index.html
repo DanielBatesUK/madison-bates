@@ -171,7 +171,7 @@
     }
     
     function pluraliser(number, singular, plural) {
-      return (number >= 2) ? `${number.toLocaleString()} ${plural}` : `${number.toLocaleString()} ${singular}`;
+      return (Number(number) >= 2) ? `${number.toLocaleString()} ${plural}` : `${number.toLocaleString()} ${singular}`;
     }
 
     function updateTime() {
@@ -204,7 +204,8 @@
       const deltaTime = currentTime - adjustedStartTime;
 
       // Update each unit using the deltaTime
-      const daysValue = Math.floor(deltaTime / (1000 * 60 * 60 * 24));
+      const weeksValue = Math.floor(deltaTime / (1000 * 60 * 60 * 24 * 7));
+      const daysValue = Math.floor((deltaTime % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24));
       const hoursValue = Math.floor((deltaTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutesValue = Math.floor((deltaTime % (1000 * 60 * 60)) / (1000 * 60));
       const secondsValue = Math.floor((deltaTime % (1000 * 60)) / 1000);
@@ -212,6 +213,7 @@
       // Display the results
       document.getElementById("years").innerHTML = years > 0 ? pluraliser(years, "year", "years") : "";
       document.getElementById("months").innerHTML = months > 0 ? pluraliser(months, "month", "months") : "";
+      document.getElementById("weeks").innerHTML = weeksValue > 0 ? pluraliser(weeksValue, "week", "weeks") : "";
       document.getElementById("days").innerHTML = daysValue > 0 ? pluraliser(daysValue, "day", "days") : "";
       document.getElementById("hours").innerHTML = hoursValue > 0 ? pluraliser(hoursValue, "hour", "hours") : "";
       document.getElementById("minutes").innerHTML = minutesValue > 0 ? pluraliser(minutesValue, "minute", "minutes") : "";
@@ -222,7 +224,7 @@
       const totalMonthsValue = (years * 12) + months;
       document.getElementById("totalMonths").innerHTML = (totalMonthsValue < 1) ? '0 months' : pluraliser(totalMonthsValue, 'month', 'months');
       const totalWeeksValue = (currentTime - startTime) / (1000 * 60 * 60 * 24 * 7);
-      document.getElementById("totalWeeks").innerHTML = (totalWeeksValue < 1) ? '0 weeks' : pluraliser(Math.floor(totalWeeksValue), 'week', 'weeks');
+      document.getElementById("totalWeeks").innerHTML = (totalWeeksValue < 1) ? '' : pluraliser(Math.floor(totalWeeksValue), 'week', 'weeks');
       const totalDaysValue = (currentTime - startTime) / (1000 * 60 * 60 * 24);
       document.getElementById("totalDays").innerHTML = (totalDaysValue < 1) ? '' : pluraliser(Math.floor(totalDaysValue), 'day', 'days');
       const totalHoursValue = (currentTime - startTime) / (1000 * 60 * 60);
